@@ -41,6 +41,8 @@
 #include "hipSYCL/runtime/application.hpp"
 #include "hipSYCL/runtime/instrumentation.hpp"
 
+#include <coroutine>
+
 namespace hipsycl {
 namespace sycl {
 
@@ -49,6 +51,12 @@ class event {
 public:
   event()
   {}
+
+  constexpr bool await_ready() const noexcept { return false; }
+
+  constexpr void await_suspend(std::coroutine_handle<>) const noexcept {}
+
+  void await_resume() noexcept { this->wait(); }
 
   event(
       const rt::dag_node_ptr &evt,
