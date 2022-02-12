@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        clang_version: [11, 12, 13]
+        clang_version: [11, 12, 13, 14]
         os: [ubuntu-20.04]
     steps:
       - uses: actions/checkout@v2
@@ -28,13 +28,15 @@ jobs:
           sudo apt install libboost-all-dev
       - name: setup build env
         run: |
-          
-          if [[ "${{matrix.clang_version}}" == "12" ]]; then
-            export CC=clang-12
-            export CXX=clang++-12
+          if [[ "${{matrix.clang_version}}" == "14" ]]; then
+            export CC=clang-14
+            export CXX=clang++-14
           elif [[ "${{matrix.clang_version}}" == "13" ]]; then
             export CC=clang-13
             export CXX=clang++-13
+          elif [[ "${{matrix.clang_version}}" == "12" ]]; then
+            export CC=clang-12
+            export CXX=clang++-12
           fi
           export CXXFLAGS="$CXXFLAGS"
           if [[ "${{matrix.clang_version}}" != "11" ]]; then
